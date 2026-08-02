@@ -1,0 +1,71 @@
+# Prices are USD per million tokens. OpenRouter prices are refreshed in memory
+# from its public model catalog before an open run when available.
+
+[settings]
+workers = 3
+max_workers = 5
+max_cost_usd = 10.0
+worker_retries = 1
+parent_max_iterations = 20
+hermes_command = "hermes"
+timeout_seconds = 3600
+
+[token_budget.planner]
+input = 12000
+output = 2500
+
+[token_budget.worker]
+input = 100000
+output = 12000
+
+[token_budget.synthesis]
+input = 140000
+output = 12000
+
+[routes.private]
+label = "Confidential inference; local and private sources allowed"
+
+[routes.private.planner]
+provider = "tinfoil"
+model = "kimi-k2-6"
+input_price = 1.50
+output_price = 5.25
+toolsets = ["delegation", "web", "terminal", "file"]
+
+[routes.private.worker]
+provider = "tinfoil"
+model = "gpt-oss-120b"
+input_price = 0.15
+output_price = 0.60
+toolsets = ["web", "terminal", "file"]
+
+[routes.private.synthesis]
+provider = "tinfoil"
+model = "kimi-k2-6"
+input_price = 1.50
+output_price = 5.25
+toolsets = ["search"]
+
+[routes.open]
+label = "Public-source inference; no private context or local sources"
+
+[routes.open.planner]
+provider = "openrouter"
+model = "deepseek/deepseek-v4-pro"
+input_price = 0.435
+output_price = 0.87
+toolsets = ["delegation", "web", "browser"]
+
+[routes.open.worker]
+provider = "openrouter"
+model = "deepseek/deepseek-v4-flash-0731"
+input_price = 0.09
+output_price = 0.18
+toolsets = ["web", "browser"]
+
+[routes.open.synthesis]
+provider = "openrouter"
+model = "deepseek/deepseek-v4-pro"
+input_price = 0.435
+output_price = 0.87
+toolsets = ["search"]
